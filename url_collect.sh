@@ -41,6 +41,37 @@ Main() {
     echo 
 }
 
+# Check for the presence of the -p option
+while getopts ":p" opt; do
+  case $opt in
+    p)
+      extract_params=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Remove the parsed options from the positional parameters
+shift $((OPTIND-1))
+
+Main "$@"
+
+# Extract URL parameters by using -p
+if [ "$extract_params" = true ]; then
+    urls_file="$output_dir/urls" # Replace with your actual file path
+    if [ -f "$urls_file" ]; then
+        echo "Extracting URL parameters..."
+        cat "$urls_file" | grep -oP "\?.*?" | sed 's/&/\n/g' | cut -d '?' -f 2 | sort | uniq > "$output_dir/parameters"
+        echo "Extracted parameters are saved to $output_dir/parameters"
+    else
+        echo "URLs file not found: $urls_file"
+    fi
+fi
+
+
 echo -e $blue$bold """
  ___  ___  ________  ___                                                                      
 |\  \|\  \|\   __  \|\  \                                                                     
@@ -55,6 +86,8 @@ echo -e $blue$bold """
   \ \  \____\ \  \\\  \ \  \____\ \  \____\ \  \_|\ \ \  \____   \ \  \ \ \  \\\  \ \  \\  \| 
    \ \_______\ \_______\ \_______\ \_______\ \_______\ \_______\  \ \__\ \ \_______\ \__\\ _\ 
     \|_______|\|_______|\|_______|\|_______|\|_______|\|_______|   \|__|  \|_______|\|__|\|__|
+
+    -p: Extract URL Parameters.
                                                                                                  
 """$end
 
