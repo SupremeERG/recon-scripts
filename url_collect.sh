@@ -93,9 +93,20 @@ Output_banner() {
 
 }
 
-
 Output_banner
-Main "$1"
+
+echo -n "Please enter the domain name (e.g., google.com): "
+read target_domain
+
+# Validate the domain format and prepend https://
+if [[ $target_domain =~ ^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
+    target_domain="https://$target_domain"
+else
+    echo "Invalid domain format. Please ensure it's in the format 'example.com'."
+    exit 1
+fi
+
+Main "$target_domain"
 
 
 # Extract URL parameters by using -p
