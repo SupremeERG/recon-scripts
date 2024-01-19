@@ -10,6 +10,7 @@ end="\e[0m"
 
 #variables
 extract_params=false
+target_domain=$1
 
 
 POSITIONAL_ARGS=()
@@ -39,8 +40,7 @@ Main() {
 
     # target domain
     target_domain="$1"
-    echo TARGET DOM $target_domain
-    output_dir=recon-$(echo $target_domain | sha256sum | awk '{print $1}' | cut -c 1-12) #/url_collector
+    output_dir=recon-$(echo $target_domain | sha256sum | awk '{print $1}' | cut -c 1-16) #/url_collector
 
     mkdir -p ./$output_dir
     echo "$target_domain" > $output_dir/index
@@ -95,8 +95,6 @@ Output_banner() {
 
 Output_banner
 
-echo -n "Please enter the domain name (e.g., google.com): "
-read target_domain
 
 # Validate the domain format and prepend https://
 if [[ $target_domain =~ ^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
@@ -114,7 +112,7 @@ if [ "$EXTRACT_PARAMS" = true ]; then
     urls_file="$output_dir/urls"
     if [ -f "$urls_file" ]; then
         echo "Extracting URL parameters..."
-        cat "$urls_file" | grep -oP "\?.*" | sed 's/&/\n/g' | cut -d '?' -f 2 | sort | uniq > "$output_dir/parameters"
+        cat "$urls_file" | grep -oP "\?.+" | cut -d '?' -f 2 | tr "&" "\n" | sed -E "s/\=.*//g" | sort | uniq > "$output_dir/parameters"
         echo "Extracted parameters are saved to $output_dir/parameters"
     else
         echo "URLs file not found: $urls_file"
