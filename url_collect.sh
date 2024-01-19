@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
 
 # color codes
 bold="\e[1m"
@@ -47,7 +47,7 @@ Main() {
 
     # fetching URLs using gau
     echo -e $blue"Fetching URLs using gau"$end
-    echo -e $target_domain | gau --threads 3 --providers wayback > $output_dir/gau # remove the providors option later
+    echo -e $target_domain | gau --threads 3  > $output_dir/gau
     echo -e "Found $green$bold"$(wc -l "$output_dir/gau"| awk '{print $1}')"$end URLs"
     echo
     
@@ -93,7 +93,7 @@ Output_banner() {
 
 }
 
-Output_banner
+#Output_banner
 
 
 # Validate the domain format and prepend https://
