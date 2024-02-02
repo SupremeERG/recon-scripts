@@ -47,7 +47,7 @@ Main() {
 
     # fetching URLs using gau
     echo -e $blue"Fetching URLs using gau"$end
-    echo -e $target_domain | gau --threads 3  > $output_dir/gau
+    echo -e $target_domain | sudo $(which gau) --threads 3  > $output_dir/gau
     echo -e "Found $green$bold"$(wc -l "$output_dir/gau"| awk '{print $1}')"$end URLs"
     echo
     
