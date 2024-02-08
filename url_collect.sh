@@ -119,3 +119,4 @@ if [ "$EXTRACT_PARAMS" = true ]; then
     fi
 fi
 
+# js file regex = (\.(js|JS|jS|Js)(\?.*)?)$
