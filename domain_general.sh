@@ -32,7 +32,7 @@ echo [+] Found $(wc -l "$urls_dir/crawl.txt" | awk '{print $1}') URLs
 
 # HTTPX
 echo [*] Probing subdomains
-httpx -l "${output_dir}subdomains.txt" -o "${probed_dir}probed.txt"
+httpx -l "${output_dir}subdomains.txt" -o "${probed_dir}probed.txt" > /dev/null 2> /dev/null
 echo [+] $(wc -l "$probed_dir/probed.txt" | awk '{print $1}')/$(wc -l "$output_dir/subdomains.txt" | awk '{print $1}') alive subdomains
 
 # Sed to strip "http(s)://"
